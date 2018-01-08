@@ -68,7 +68,7 @@ class ctrlmmEntryAdmin extends ctrlmmEntry {
 	 * @return bool
 	 */
 	public function checkPermission() {
-		global $rbacreview, $ilUser;
+		global $rbacreview, $ilUser, $rbacsystem;
 
 		if (!$this->isPermissionCached()) {
 			$this->setCachedPermission(false);
@@ -79,8 +79,8 @@ class ctrlmmEntryAdmin extends ctrlmmEntry {
 				}
 			}
 
-			//global administrator has permissions
-			if(in_array(2,$rbacreview->assignedGlobalRoles($ilUser->getId()))) {
+			//check if user can access administration tab
+			if($rbacsystem->checkAccess('visible', SYSTEM_FOLDER_ID)) {
 				$this->setCachedPermission(true);
 				return true;
 			}
